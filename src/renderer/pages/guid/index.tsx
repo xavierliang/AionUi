@@ -5,7 +5,6 @@
  */
 
 import { ipcBridge } from '@/common';
-import type { AcpBackend } from '@/types/acpTypes';
 import type { IProvider, TProviderWithModel } from '@/common/storage';
 import { ConfigStorage } from '@/common/storage';
 import { uuid } from '@/common/utils';
@@ -21,6 +20,7 @@ import { usePasteService } from '@/renderer/hooks/usePasteService';
 import { formatFilesForMessage } from '@/renderer/hooks/useSendBoxFiles';
 import { allSupportedExts, type FileMetadata, getCleanFileNames } from '@/renderer/services/FileService';
 import { hasSpecificModelCapability } from '@/renderer/utils/modelCapabilities';
+import type { AcpBackend } from '@/types/acpTypes';
 import { Button, ConfigProvider, Dropdown, Input, Menu, Radio, Space, Tooltip } from '@arco-design/web-react';
 import { ArrowUp, Plus } from '@icon-park/react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -367,19 +367,12 @@ const Guid: React.FC = () => {
   }, [t]);
   return (
     <ConfigProvider getPopupContainer={() => guidContainerRef.current || document.body}>
-      <div ref={guidContainerRef} className='h-full flex-center flex-col px-100px' style={{ position: 'relative' }}>
+      <div ref={guidContainerRef} className={`h-full flex-center flex-col ${styles.guidLayout}`}>
         <p className='text-2xl font-semibold text-gray-900 mb-8'>{t('conversation.welcome.title')}</p>
-        <div
-          className={`bg-white b-solid border rd-20px focus-within:shadow-[0px_2px_20px_rgba(77,60,234,0.1)] transition-all duration-200 overflow-hidden p-16px ${isFileDragging ? 'bg-blue-50 border-blue-300 border-dashed' : 'border-#E5E6EB'}`}
-          style={{
-            width: 'clamp(400px, calc(100% - 80px), 720px)',
-            margin: '0 auto',
-          }}
-          {...dragHandlers}
-        >
+        <div className={`${styles.guidInputCard} bg-white b-solid border rd-20px focus-within:shadow-[0px_2px_20px_rgba(77,60,234,0.1)] transition-all duration-200 overflow-hidden p-16px ${isFileDragging ? 'bg-blue-50 border-blue-300 border-dashed' : 'border-#E5E6EB'}`} {...dragHandlers}>
           <Input.TextArea rows={3} placeholder={typewriterPlaceholder || t('conversation.welcome.placeholder')} className={`text-16px focus:b-none rounded-xl !bg-white !b-none !resize-none !p-0 ${styles.lightPlaceholder}`} value={input} onChange={(v) => setInput(v)} onPaste={onPaste} onFocus={onFocus} {...compositionHandlers} onKeyDown={createKeyDownHandler(sendMessageHandler)}></Input.TextArea>
-          <div className='flex items-center justify-between '>
-            <div className='flex items-center gap-10px'>
+          <div className={styles.actionRow}>
+            <div className={`${styles.actionTools} flex items-center gap-10px`}>
               <Dropdown
                 trigger='hover'
                 onVisibleChange={setIsPlusDropdownOpen}
@@ -412,8 +405,8 @@ const Guid: React.FC = () => {
                   </Menu>
                 }
               >
-                <span className='flex items-center gap-4px cursor-pointer lh-[1]'>
-                  <Button type='secondary' shape='circle' className={isPlusDropdownOpen ? styles.plusButtonRotate : ''} icon={<Plus theme='outline' size='14' strokeWidth={2} fill='#333' />}></Button>
+                <span className='sendbox-tools'>
+                  <Button type='secondary' shape='circle' className={`sendbox-icon-btn sendbox-icon-plus ${isPlusDropdownOpen ? styles.plusButtonRotate : ''}`} icon={<Plus theme='outline' size='14' strokeWidth={2} fill='#333' />}></Button>
                   {files.length > 0 && (
                     <Tooltip className={'!max-w-max'} content={<span className='whitespace-break-spaces'>{getCleanFileNames(files).join('\n')}</span>}>
                       <span>File({files.length})</span>
@@ -476,22 +469,27 @@ const Guid: React.FC = () => {
                     </Menu>
                   }
                 >
-                  <Button shape='round'>{currentModel ? currentModel.useModel : t('conversation.welcome.selectModel')}</Button>
+                  <Button className={'sendbox-model-btn'} shape='round'>
+                    {currentModel ? currentModel.useModel : t('conversation.welcome.selectModel')}
+                  </Button>
                 </Dropdown>
               )}
             </div>
-            <Button
-              shape='circle'
-              type='primary'
-              loading={loading}
-              disabled={(!selectedAgent || selectedAgent === 'gemini') && !currentModel}
-              icon={<ArrowUp theme='outline' size='14' fill='white' strokeWidth={2} />}
-              onClick={() => {
-                handleSend().catch((error) => {
-                  console.error('Failed to send message:', error);
-                });
-              }}
-            />
+            <div className={styles.actionSubmit}>
+              <Button
+                shape='circle'
+                type='primary'
+                className={'sendbox-icon-btn'}
+                loading={loading}
+                disabled={(!selectedAgent || selectedAgent === 'gemini') && !currentModel}
+                icon={<ArrowUp theme='outline' size='14' fill='white' strokeWidth={2} />}
+                onClick={() => {
+                  handleSend().catch((error) => {
+                    console.error('Failed to send message:', error);
+                  });
+                }}
+              />
+            </div>
           </div>
         </div>
 
