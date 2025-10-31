@@ -667,3 +667,5 @@ html[data-theme="dark"] .layout-sider-header > div:first-child {
     min-height: 100dvh !important;
   }
 }
+
+/* (removed) PWA floating reload button */
