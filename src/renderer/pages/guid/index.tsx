@@ -157,8 +157,20 @@ const Guid: React.FC = () => {
     supportedExts: allSupportedExts,
     onFilesAdded: handleFilesAdded,
     onTextPaste: (text: string) => {
-      // 处理清理后的文本粘贴
-      setInput(text);
+      // 按光标位置插入文本，保持现有内容
+      const textarea = document.activeElement as HTMLTextAreaElement | null;
+      if (textarea && textarea.tagName === 'TEXTAREA') {
+        const start = textarea.selectionStart ?? textarea.value.length;
+        const end = textarea.selectionEnd ?? start;
+        const currentValue = textarea.value;
+        const newValue = currentValue.slice(0, start) + text + currentValue.slice(end);
+        setInput(newValue);
+        setTimeout(() => {
+          textarea.setSelectionRange(start + text.length, start + text.length);
+        }, 0);
+      } else {
+        setInput((prev) => prev + text);
+      }
     },
   });
 

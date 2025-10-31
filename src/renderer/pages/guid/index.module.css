@@ -156,3 +156,12 @@
   color: #c9cdd4 !important;
   opacity: 1 !important;
 }
+
+/* 允许在 iOS 上选择/复制输入内容与显示粘贴菜单 */
+@supports (-webkit-touch-callout: none) {
+  .guidInputCard,
+  .guidInputCard textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
