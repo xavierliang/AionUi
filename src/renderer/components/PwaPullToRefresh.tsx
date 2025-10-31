@@ -26,6 +26,26 @@ const PwaPullToRefresh: React.FC = () => {
     let tracking = false;
     const threshold = 70; // px
 
+    const getNearestScrollable = (el: EventTarget | null): HTMLElement | null => {
+      let node: HTMLElement | null = el instanceof HTMLElement ? el : null;
+      while (node && node !== document.body) {
+        const style = window.getComputedStyle(node);
+        const canScroll = (style.overflowY === 'auto' || style.overflowY === 'scroll') && node.scrollHeight > node.clientHeight;
+        if (canScroll) return node;
+        node = node.parentElement;
+      }
+      return null;
+    };
+
+    const isAtPageTop = (startTarget: EventTarget | null): boolean => {
+      const root = (document.scrollingElement as HTMLElement) || document.documentElement;
+      const layout = document.querySelector('.layout-content') as HTMLElement | null;
+      const nearest = getNearestScrollable(startTarget);
+      const values: number[] = [typeof window.scrollY === 'number' ? window.scrollY : 0, root && typeof (root as any).scrollTop === 'number' ? (root as any).scrollTop : 0, layout && typeof (layout as any).scrollTop === 'number' ? (layout as any).scrollTop : 0, nearest && typeof (nearest as any).scrollTop === 'number' ? (nearest as any).scrollTop : 0];
+      const topMost = Math.max.apply(null, values);
+      return topMost <= 0;
+    };
+
     const isTextInput = (el: EventTarget | null): boolean => {
       if (!(el instanceof HTMLElement)) return false;
       const tag = el.tagName;
@@ -37,8 +57,7 @@ const PwaPullToRefresh: React.FC = () => {
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length !== 1) return;
       if (isTextInput(e.target)) return; // avoid interfering with text selection/editing
-      const atTop = (container.scrollTop || window.scrollY || 0) <= 0;
-      if (!atTop) return;
+      if (!isAtPageTop(e.target)) return;
       startY = e.touches[0].clientY;
       deltaY = 0;
       tracking = true;
