@@ -2,7 +2,7 @@ import FlexFullContainer from '@/renderer/components/FlexFullContainer';
 import { removeStack } from '@/renderer/utils/common';
 import { Layout as ArcoLayout } from '@arco-design/web-react';
 import { ExpandLeft, ExpandRight } from '@icon-park/react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ClaudeLogo from '@/renderer/assets/logos/claude.svg';
 import CodexLogo from '@/renderer/assets/logos/codex.svg';
