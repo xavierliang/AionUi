@@ -130,7 +130,12 @@ const Layout: React.FC<{
         </button>
       )}
 
-      <ArcoLayout.Content className={'bg-#F9FAFB layout-content'}>
+      <ArcoLayout.Content
+        className={'bg-#F9FAFB layout-content'}
+        onClick={() => {
+          if (isMobile && !collapsed) setCollapsed(true);
+        }}
+      >
         <Outlet></Outlet>
         {multiAgentContextHolder}
         {directorySelectionContextHolder}
