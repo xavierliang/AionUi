@@ -1,6 +1,90 @@
 /* Guid页面的模块化样式 */
 
 /* Space容器rounded-full样式 */
+.guidLayout {
+  position: relative;
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.guidInputCard {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actionTools {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.actionSubmit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .guidLayout {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+@media (max-width: 768px) {
+  .guidLayout {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .actionRow {
+    gap: 10px;
+  }
+
+  .actionTools {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .guidLayout {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .guidInputCard {
+    padding: 12px !important;
+    border-radius: 16px;
+  }
+
+  .actionRow {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap; /* keep send button on same line */
+  }
+
+  .actionTools {
+    justify-content: flex-start;
+    overflow: hidden; /* prevent horizontal overflow on tight widths */
+  }
+
+  .actionSubmit {
+    justify-content: flex-end;
+  }
+}
+
 .roundedSpace {
   border-radius: 9999px !important;
   overflow: hidden;
@@ -71,4 +155,13 @@
 .lightPlaceholder :global(textarea::placeholder) {
   color: #c9cdd4 !important;
   opacity: 1 !important;
+}
+
+/* 允许在 iOS 上选择/复制输入内容与显示粘贴菜单 */
+@supports (-webkit-touch-callout: none) {
+  .guidInputCard,
+  .guidInputCard textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
 }

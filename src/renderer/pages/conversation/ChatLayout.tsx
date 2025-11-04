@@ -2,7 +2,7 @@ import FlexFullContainer from '@/renderer/components/FlexFullContainer';
 import { removeStack } from '@/renderer/utils/common';
 import { Layout as ArcoLayout } from '@arco-design/web-react';
 import { ExpandLeft, ExpandRight } from '@icon-park/react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ClaudeLogo from '@/renderer/assets/logos/claude.svg';
 import CodexLogo from '@/renderer/assets/logos/codex.svg';
@@ -96,7 +96,14 @@ const ChatLayout: React.FC<{
 
   return (
     <ArcoLayout className={'size-full'}>
-      <ArcoLayout.Content>
+      <ArcoLayout.Content
+        onClick={() => {
+          const isMobile = window.innerWidth < 768;
+          if (isMobile && !rightSiderCollapsed) {
+            setRightSiderCollapsed(true);
+          }
+        }}
+      >
         <ArcoLayout.Header className={classNames('flex items-center justify-between p-16px gap-16px  !bg-#F7F8FA', backend ? 'h-96px' : 'h-56px')}>
           <FlexFullContainer className='h-full'>
             <span className=' ml-16px font-bold text-16px inline-block overflow-hidden text-ellipsis whitespace-nowrap w-full max-w-60%'>{props.title}</span>

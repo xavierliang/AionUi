@@ -5,6 +5,7 @@
  */
 
 import { ipcBridge } from '@/common';
+import PwaPullToRefresh from '@/renderer/components/PwaPullToRefresh';
 import { Layout as ArcoLayout } from '@arco-design/web-react';
 import { MenuFold, MenuUnfold } from '@icon-park/react';
 import classNames from 'classnames';
@@ -129,10 +130,16 @@ const Layout: React.FC<{
         </button>
       )}
 
-      <ArcoLayout.Content className={'bg-#F9FAFB layout-content'}>
+      <ArcoLayout.Content
+        className={'bg-#F9FAFB layout-content'}
+        onClick={() => {
+          if (isMobile && !collapsed) setCollapsed(true);
+        }}
+      >
         <Outlet></Outlet>
         {multiAgentContextHolder}
         {directorySelectionContextHolder}
+        <PwaPullToRefresh />
       </ArcoLayout.Content>
     </ArcoLayout>
   );
