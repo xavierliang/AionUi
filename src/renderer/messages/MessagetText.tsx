@@ -5,14 +5,14 @@
  */
 
 import type { IMessageText } from '@/common/chatLib';
-import classNames from 'classnames';
-import React, { useMemo, useState } from 'react';
-import MarkdownView from '../components/Markdown';
-import CollapsibleContent from '../components/CollapsibleContent';
-import { Copy } from '@icon-park/react';
-import { useTranslation } from 'react-i18next';
 import { iconColors } from '@/renderer/theme/colors';
 import { Alert, Tooltip } from '@arco-design/web-react';
+import { Copy } from '@icon-park/react';
+import classNames from 'classnames';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import CollapsibleContent from '../components/CollapsibleContent';
+import MarkdownView from '../components/Markdown';
 
 const useFormatContent = (content: string) => {
   return useMemo(() => {
@@ -65,7 +65,7 @@ const MessageText: React.FC<{ message: IMessageText }> = ({ message }) => {
     <>
       <div className={classNames('flex flex-col group', isUserMessage ? 'items-end' : 'items-start')}>
         <div
-          className={classNames('rd-8px rd-tr-2px [&>p:first-child]:mt-0px [&>p:last-child]:mb-0px', {
+          className={classNames('max-w-[95%] md:max-w-[70%] rd-8px rd-tr-2px [&>p:first-child]:mt-0px [&>p:last-child]:mb-0px', {
             'bg-aou-2 p-8px': isUserMessage,
           })}
         >
